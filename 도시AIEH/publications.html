@@ -1,0 +1,276 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Publications - UCIL Lab</title>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    /* ================= 공통 스타일 (Projects와 동일) ================= */
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Inter", "Apple SD Gothic Neo", sans-serif; }
+    body { background: #ffffff; color: #0f172a; line-height: 1.7; }
+    .inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    a { text-decoration: none; color: inherit; }
+
+    /* ================= HEADER (Projects와 동일) ================= */
+    header {
+      position: fixed; top: 0; left: 0; width: 100%; height: 72px; z-index: 1000;
+      display: flex; align-items: center; background: transparent; transition: all 0.3s ease;
+    }
+    header.scrolled { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(10px); }
+    header .inner { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+
+    /* [수정] 로고 스타일: a태그 적용 */
+    .logo { 
+      font-size: 20px; 
+      font-weight: 700; 
+      letter-spacing: 0.04em; 
+      color: #ffffff; 
+      text-decoration: none; 
+      cursor: pointer;
+    }
+
+    .main-nav { display: flex; gap: 32px; align-items: center; }
+    .main-nav a { color: #ffffff; font-size: 15px; font-weight: 500; position: relative; }
+    .main-nav a::after { content: ""; position: absolute; bottom: -6px; left: 0; width: 0%; height: 2px; background: #ffffff; transition: width 0.3s ease; }
+    .main-nav a:hover::after { width: 100%; }
+
+    /* ================= Dropdown CSS ================= */
+    .nav-item { position: relative; }
+    .dropdown-menu {
+      position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(10px);
+      background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(12px); border-radius: 15px;
+      min-width: 190px; padding: 12px 0; opacity: 0; visibility: hidden; transition: 0.3s; z-index: 999;
+    }
+    .dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+    .dropdown-menu a { display: block; padding: 12px 24px; font-size: 14px; color: #cbd5e1; text-align: center; cursor: pointer; }
+    .dropdown-menu a:hover { color: #ffffff; background: rgba(255, 255, 255, 0.05); }
+    .dropdown-menu a::after { display: none; }
+
+    /* ================= SUB-HERO (높이 35vh로 통일) ================= */
+    .sub-hero {
+      width: 100%; height: 35vh; margin-top: -72px; padding-top: 72px;
+      background: linear-gradient(rgba(15, 23, 42, 0.6), rgba(15, 23, 42, 0.85)),
+                  url("https://images.unsplash.com/photo-1526378722484-bd91ca387e72?q=80&w=2070&auto=format&fit=crop") center / cover no-repeat;
+      display: flex; align-items: center; justify-content: center;
+      color: #ffffff; text-align: center; position: relative;
+    }
+    .sub-hero h1 { font-size: 48px; font-weight: 800; letter-spacing: -0.02em; }
+    
+    /* ================= Publications Tabs ================= */
+    .research-tabs {
+      position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 40px; padding-bottom: 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+    }
+    .research-tabs .tab {
+      background: none; border: none; padding: 12px 0;
+      font-size: 16px; font-weight: 600; color: rgba(255, 255, 255, 0.6); cursor: pointer; position: relative;
+    }
+    .research-tabs .tab::after {
+      content: ""; position: absolute; bottom: -1px; left: 0; width: 0%; height: 3px; background: #ffffff; transition: width 0.3s ease;
+    }
+    .research-tabs .tab.active { color: #ffffff; }
+    .research-tabs .tab.active::after { width: 100%; }
+
+    section { padding: 100px 0; }
+    .section-title { font-size: 34px; font-weight: 700; text-align: center; margin-bottom: 60px; }
+    .tab-content { display: none; max-width: 900px; margin: 0 auto; animation: fadeIn 0.5s ease; }
+    .tab-content.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* ===== Publication List ===== */
+    .year-block { margin-bottom: 48px; }
+    .year { font-size: 22px; font-weight: 700; margin-bottom: 18px; border-left: 4px solid #0f172a; padding-left: 12px; }
+    .pub-list li { margin-bottom: 14px; color: #334155; }
+
+    /* ===== Award Gallery ===== */
+    .award-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; }
+    .award-grid img { width: 100%; border-radius: 14px; box-shadow: 0 12px 30px rgba(0,0,0,.15); }
+
+    /* ================= FOOTER ================= */
+    footer { padding: 60px 0; background: #0f172a; color: #cbd5f5; font-size: 14px; text-align: center; }
+    .footer-copy { margin-top: 24px; padding-top: 16px; border-top: 1px solid #344660; color: #b0b7c3; }
+  </style>
+</head>
+
+<body>
+
+<header id="header">
+  <div class="inner">
+    <a href="index.html" class="logo">URBAN AI LAB</a>
+
+    <nav class="main-nav">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="projects.html">Projects</a>
+      
+      <div class="nav-item dropdown">
+        <a href="publications.html" style="font-weight: 700;">Publications</a>
+        <div class="dropdown-menu">
+          <a href="javascript:void(0)" onclick="switchTab('journal')">Journal</a>
+          <a href="javascript:void(0)" onclick="switchTab('conference')">Conference</a>
+          <a href="javascript:void(0)" onclick="switchTab('award')">Award</a>
+        </div>
+      </div>
+      
+      <div class="nav-item dropdown">
+        <a href="members.html">Members</a>
+        <div class="dropdown-menu">
+          <a href="members.html#professor">Professor</a>
+          <a href="members.html#researcher">Researcher</a>
+          <a href="members.html#student">Student</a>
+        </div>
+      </div>
+      
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<section class="sub-hero">
+  <h1>Publications</h1>
+  <div class="research-tabs">
+    <button class="tab active" data-tab="journal">Journal</button>
+    <button class="tab" data-tab="conference">Conference</button>
+    <button class="tab" data-tab="award">Award</button>
+  </div>
+</section>
+
+<section>
+  <div class="inner">
+    <h2 class="section-title" id="pub-title">Journal</h2>
+
+    <div class="tab-content active" id="section-journal">
+
+      <div class="year-block">
+        <div class="year">2024</div>
+        <ul class="pub-list">
+          <li>인구특성 데이터 기반 대한민국 인구실태 분석: 229개 기초지자체를 대상으로, 김대환, 정광식, 남우민, 권영상, 박건철*, 한국인구학.</li>
+          <li>유아 특성을 고려한 AI 윤리 프레임워크와 규제 방향 도출에 관한 연구, 정광식, 양재훈, 박건철*, 디지털콘텐츠학회 논문지.</li>
+          <li>유아용 인공지능 동반자의 사회적 특성 연구, 장수정, 한승희, 박건철*, 디지털콘텐츠학회 논문지.</li>
+        </ul>
+      </div>
+
+      <div class="year-block">
+        <div class="year">2023</div>
+        <ul class="pub-list">
+          <li>Hourglass 기반 공공도입연계형 국가연구개발사업성과평가 프레임워크 제안, 이승하 외, 인터넷정보학회 논문지(JICS).</li>
+          <li>Where and Why? A Novel Approach for Prioritizing Implementation Points of Public CCTVs using Urban Big Data, Park et al., JICS.</li>
+          <li>Application of Urban Computing to explore Living Environment Characteristics in Seoul, Kim et al., JICS.</li>
+          <li>스마트도시 구현을 위한 시민참여의 역할과 방향에 관한 연구, 남우민, 박건철*, JICS.</li>
+        </ul>
+      </div>
+
+      <div class="year-block">
+        <div class="year">2022</div>
+        <ul class="pub-list">
+          <li>Investigating Consumer Innovativeness for New Media Infusion, Park & Lee*, KSII TIIS.</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="tab-content" id="section-conference">
+
+      <div class="year-block">
+        <div class="year">2024</div>
+        <ul class="pub-list">
+          <li>Impact of Land Uses on Municipal Waste Generation, IUSAM 2024.</li>
+          <li>Exploratory study of big data analytics methodology for classifying city types, IUSAM 2024.</li>
+          <li>인구특성 데이터 기반 도시인구 실태 분석, 한국인구학회 2024.</li>
+          <li>특허 네트워크 분석을 활용한 국토교통 기술 연결 지형 구성, 한국인터넷정보학회 2024.</li>
+        </ul>
+      </div>
+
+      <div class="year-block">
+        <div class="year">2023</div>
+        <ul class="pub-list">
+          <li>AI Companion for Children: A Service Architecture, ICONI 2023.</li>
+          <li>Where and Why? Public CCTVs using Urban Big Data, APIC-IST 2023.</li>
+          <li>Rethinking Citizen Participation for Urban Planning, APIC-IST 2023.</li>
+        </ul>
+      </div>
+
+      <div class="year-block">
+        <div class="year">2022</div>
+        <ul class="pub-list">
+          <li>Evaluating Mission-Oriented R&D Programs, ICONI 2022.</li>
+          <li>A Study on Performance Evaluation Framework for AI-Driven Systems, ICONI 2022.</li>
+          <li>사용자 참여형 빅데이터 기반 건강 위험도 관리 서비스, 한국인터넷정보학회 2022.</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="tab-content" id="section-award">
+      <div class="award-grid">
+        <img src="https://i.postimg.cc/CMWfBw17/unnamed-(2).png" alt="Award 1">
+        <img src="https://i.postimg.cc/dQ7yVhq1/unnamed-(3).png" alt="Award 2">
+        <img src="https://i.postimg.cc/PNsht3dp/unnamed-(4).png" alt="Award 3">
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="inner">
+    <h3>Urban AI Lab</h3>
+    <p>Department of Business Administration, Tech University of Korea</p>
+    <div class="footer-copy">
+      © 2026 Urban AI Lab. All Rights Reserved.
+    </div>
+  </div>
+</footer>
+
+<script>
+  const header = document.getElementById("header");
+  window.addEventListener("scroll", () => {
+    header.classList.toggle("scrolled", window.scrollY > 80);
+  });
+
+  const tabs = document.querySelectorAll(".tab");
+  const contents = document.querySelectorAll(".tab-content");
+  const title = document.getElementById("pub-title");
+
+  // 탭 전환 함수
+  function switchTab(tabName) {
+    // 1. 모든 탭/콘텐츠 비활성화
+    tabs.forEach(t => t.classList.remove("active"));
+    contents.forEach(c => c.classList.remove("active"));
+
+    // 2. 선택된 탭 찾기
+    const selectedTab = document.querySelector(`.tab[data-tab="${tabName}"]`);
+    
+    // 3. 선택된 콘텐츠 찾기 (ID prefix 'section-' 사용)
+    const selectedContent = document.getElementById('section-' + tabName);
+
+    if (selectedTab && selectedContent) {
+      selectedTab.classList.add("active");
+      selectedContent.classList.add("active");
+      title.textContent = selectedTab.textContent;
+    }
+  }
+
+  // 탭 메뉴 클릭 이벤트
+  tabs.forEach(tab => {
+    tab.addEventListener("click", () => {
+      switchTab(tab.dataset.tab);
+    });
+  });
+
+  // URL 해시값(#)을 읽어 해당 탭 열기 (스크롤 없이)
+  window.addEventListener('DOMContentLoaded', () => {
+    const hash = window.location.hash.replace('#', '');
+    if (hash && (hash === 'journal' || hash === 'conference' || hash === 'award')) {
+      switchTab(hash);
+    }
+  });
+</script>
+
+</body>
+</html>

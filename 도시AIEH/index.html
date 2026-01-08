@@ -1,0 +1,426 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>URBAN AI Lab - Home</title>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    /* [공통 스타일] Projects 페이지와 100% 동일하게 리셋 */
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Inter", "Apple SD Gothic Neo", sans-serif; }
+    body { background: #ffffff; color: #0f172a; line-height: 1.6; }
+
+    .inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ================= HEADER (통일된 스타일) ================= */
+    header {
+      position: fixed; top: 0; left: 0; width: 100%; height: 72px; z-index: 1000;
+      display: flex; align-items: center; background: transparent; transition: all 0.3s ease;
+    }
+    header.scrolled { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(10px); }
+    header .inner { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+    
+    .logo { 
+      font-size: 20px; font-weight: 700; letter-spacing: 0.04em; color: #ffffff; 
+      text-decoration: none; cursor: pointer;
+    }
+    .main-nav { display: flex; gap: 32px; align-items: center; }
+    .main-nav a { text-decoration: none; color: #ffffff; font-size: 15px; font-weight: 500; position: relative; }
+    .main-nav a::after { content: ""; position: absolute; bottom: -6px; left: 0; width: 0%; height: 2px; background: #ffffff; transition: width 0.3s ease; }
+    .main-nav a:hover::after { width: 100%; }
+
+    /* ================= Dropdown CSS ================= */
+    .nav-item { position: relative; }
+    .dropdown-menu {
+      position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(10px);
+      background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(12px); border-radius: 15px;
+      min-width: 190px; padding: 12px 0; opacity: 0; visibility: hidden; transition: 0.3s; z-index: 999;
+    }
+    .dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+    .dropdown-menu a { display: block; padding: 12px 24px; font-size: 14px; color: #cbd5e1; text-decoration: none; text-align: center; }
+    .dropdown-menu a:hover { color: #fff; background: rgba(255,255,255,0.05); }
+    .dropdown-menu a::after { display: none; }
+
+    /* ================= 1. HERO SLIDER ================= */
+    .hero {
+      position: relative;
+      height: 100vh;
+      margin-top: -72px; 
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #ffffff;
+    }
+
+    .hero-bg-container {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: -1;
+    }
+
+    .hero-bg {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      animation: imageFade 18s infinite;
+    }
+
+    /* 슬라이드 1 */
+    .hero-bg:nth-child(1) {
+      background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)),
+      url("https://images.unsplash.com/photo-1639762681485-074b7f938ba0?q=80&w=2070&auto=format&fit=crop");
+      animation-delay: 0s;
+    }
+    /* 슬라이드 2 */
+    .hero-bg:nth-child(2) {
+      background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.6)),
+      url("https://images.unsplash.com/photo-1573164713988-8665fc963095?q=80&w=2069&auto=format&fit=crop");
+      animation-delay: 6s;
+    }
+    /* 슬라이드 3 */
+    .hero-bg:nth-child(3) {
+      background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)),
+      url("https://images.unsplash.com/photo-1542281286-9e0a16bb7366?q=80&w=2070&auto=format&fit=crop");
+      animation-delay: 12s;
+    }
+
+    @keyframes imageFade {
+      0% { opacity: 0; }
+      5% { opacity: 1; }
+      33% { opacity: 1; }
+      38% { opacity: 0; }
+      100% { opacity: 0; }
+    }
+
+    .hero-content { z-index: 10; padding: 0 24px; }
+    .hero-content h1 { font-size: 56px; font-weight: 800; line-height: 1.2; margin-bottom: 24px; letter-spacing: -0.03em; text-transform: capitalize; }
+    .hero-content p { font-size: 20px; opacity: 0.9; font-weight: 300; letter-spacing: 0.01em; }
+
+    .hero-indicator {
+      position: absolute; bottom: 50px; right: 50px; z-index: 20; color: #ffffff;
+      display: flex; flex-direction: column; align-items: flex-end; gap: 10px;
+    }
+    .slide-number { font-size: 14px; font-weight: 600; letter-spacing: 0.1em; }
+    .slide-number span::after { content: "01"; animation: numberUpdate 18s infinite; }
+
+    @keyframes numberUpdate {
+      0%, 33.32% { content: "01"; }
+      33.33%, 66.65% { content: "02"; }
+      66.66%, 100% { content: "03"; }
+    }
+
+    .progress-track { width: 150px; height: 2px; background: rgba(255, 255, 255, 0.3); position: relative; overflow: hidden; }
+    .progress-bar { position: absolute; top: 0; left: 0; height: 100%; background: #ffffff; width: 0%; animation: progressRun 6s linear infinite; }
+
+    @keyframes progressRun { 0% { width: 0%; } 100% { width: 100%; } }
+
+    /* ================= SECTION COMMON ================= */
+    section { padding: 100px 0; }
+    .section-title { font-size: 32px; font-weight: 700; text-align: center; margin-bottom: 60px; position: relative; }
+    .section-title::after { content: ""; display: block; width: 40px; height: 3px; margin: 15px auto 0; background: #0f172a; }
+    .section-gray { background: #f8fafc; }
+
+    /* ================= STATISTICS ================= */
+    .stats-container { background: #0f172a; padding: 60px 0; color: #ffffff; }
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; text-align: center; }
+    .stat-item h2 { font-size: 42px; font-weight: 800; color: #38bdf8; margin-bottom: 5px; }
+    .stat-item p { font-size: 13px; opacity: 0.6; text-transform: uppercase; }
+
+    /* ================= FEATURED PROJECTS ================= */
+    .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
+    .project-link { text-decoration: none; color: inherit; display: block; }
+    .project-card { position: relative; border-radius: 16px; overflow: hidden; height: 300px; cursor: pointer; }
+    .project-img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s; }
+    .project-card:hover .project-img { transform: scale(1.1); }
+    .project-overlay { 
+      position: absolute; inset: 0; 
+      background: linear-gradient(transparent, rgba(15, 23, 42, 0.9)); 
+      display: flex; flex-direction: column; justify-content: flex-end; 
+      padding: 30px; color: white; 
+    }
+    .project-overlay h3 { font-size: 20px; font-weight: 700; margin-bottom: 8px; line-height: 1.3; }
+    .project-overlay p { font-size: 14px; opacity: 0.8; font-weight: 300; }
+
+    #project-loading { text-align: center; color: #94a3b8; font-size: 14px; grid-column: 1 / -1; }
+
+    /* ================= PUBLICATIONS ================= */
+    .pub-list { max-width: 850px; margin: 0 auto; }
+    .pub-item { background: white; padding: 25px 30px; border-radius: 12px; margin-bottom: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); border-left: 4px solid #0f172a; text-align: left; }
+    
+    .pub-item h3 { 
+      font-size: 16px; 
+      font-weight: 700; 
+      margin-bottom: 8px; 
+      line-height: 1.5; 
+      color: #1e293b;
+    }
+    .pub-item p { font-size: 14px; color: #475569; font-weight: 500; }
+
+    #pub-loading { text-align: center; color: #94a3b8; font-size: 14px; }
+
+    /* ================= VIDEO SECTION ================= */
+    .video-container-single { max-width: 800px; margin: 0 auto; }
+    .video-item { background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+    .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; background: #000; }
+    .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+    .video-info { padding: 20px; text-align: center; }
+    .video-info h3 { font-size: 17px; font-weight: 600; color: #1e293b; }
+
+    /* ================= FOOTER ================= */
+    footer { padding: 70px 0; background: #0f172a; color: #cbd5f5; font-size: 14px; text-align: center; }
+    .footer-copy { margin-top: 30px; padding-top: 20px; border-top: 1px solid #344660; color: #B0B7C3; }
+  </style>
+</head>
+
+<body>
+
+  <header id="header">
+    <div class="inner">
+      <a href="index.html" class="logo">URBAN AI LAB</a>
+      <nav class="main-nav">
+        <a href="index.html" style="font-weight: 700; color: #fff;">Home</a>
+        <a href="about.html">About</a>
+        <a href="projects.html">Projects</a>
+        
+        <div class="nav-item dropdown">
+          <a href="publications.html">Publications</a>
+          <div class="dropdown-menu">
+            <a href="publications.html#journal">Journal</a>
+            <a href="publications.html#conference">Conference</a>
+            <a href="publications.html#award">Award</a>
+          </div>
+        </div>
+
+        <div class="nav-item dropdown">
+          <a href="members.html">Members</a>
+          <div class="dropdown-menu">
+            <a href="members.html#professor">Professor</a>
+            <a href="members.html#researcher">Researcher</a>
+            <a href="members.html#student">Student</a>
+          </div>
+        </div>
+        
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero" id="home">
+    <div class="hero-bg-container">
+      <div class="hero-bg"></div>
+      <div class="hero-bg"></div>
+      <div class="hero-bg"></div>
+    </div>
+
+    <div class="hero-content">
+      <h1>Architecting the Next<br/>Generation of AI Cities</h1>
+      <p>Leading the paradigm shift in urban living through advanced AI and spatial intelligence.</p>
+    </div>
+
+    <div class="hero-indicator">
+      <div class="slide-number">
+        <span></span> / 03
+      </div>
+      <div class="progress-track">
+        <div class="progress-bar"></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="stats-container">
+    <div class="inner">
+      <div class="stats-grid">
+        <div class="stat-item"><h2>40+</h2><p>Publications</p></div>
+        <div class="stat-item"><h2>10+</h2><p>Projects</p></div>
+        <div class="stat-item"><h2>07+</h2><p>Academic Awards</p></div>
+        <div class="stat-item"><h2>05+</h2><p>Patents & IP</p></div>
+      </div>
+    </div>
+  </div>
+
+  <section id="projects">
+    <div class="inner">
+      <h2 class="section-title">Featured Projects</h2>
+      <div class="project-grid" id="featured-project-list">
+        <p id="project-loading">Loading projects from Projects page...</p>
+        </div>
+    </div>
+  </section>
+
+  <section class="section-gray" id="publications">
+    <div class="inner">
+      <h2 class="section-title">Recent Publications</h2>
+      
+      <div class="pub-list" id="recent-pubs-list">
+        <p id="pub-loading">Loading recent publications...</p>
+        </div>
+
+    </div>
+  </section>
+
+  <section id="videos">
+    <div class="inner">
+      <h2 class="section-title">Lab Video</h2>
+      <div class="video-container-single"> 
+        <div class="video-item">
+          <div class="video-wrapper">
+            <iframe src="https://www.youtube.com/embed/PBmKGHWhTzA" allowfullscreen></iframe>
+          </div>
+          <div class="video-info">
+            <h3>Introduction to URBAN AI Lab</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="inner">
+      <div class="footer-container">
+        <h3>URBAN AI LAB</h3>
+        <p>Department of Business Administration, Tech University of Korea</p>
+        <div class="footer-copy"><p>© 2026 URBAN AI LAB. All Rights Reserved.</p></div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const header = document.getElementById("header");
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 80) header.classList.add("scrolled");
+      else header.classList.remove("scrolled");
+    });
+    lucide.createIcons();
+
+    // 1. Publications 불러오기
+    async function loadRecentPublications() {
+      const container = document.getElementById('recent-pubs-list');
+      
+      try {
+        const response = await fetch('publications.html');
+        if (!response.ok) throw new Error("Failed to fetch");
+        
+        const text = await response.text();
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(text, 'text/html');
+
+        let journalSection = doc.getElementById('section-journal');
+        if (!journalSection) journalSection = doc.getElementById('journal');
+        
+        if (!journalSection) {
+          container.innerHTML = '<p style="text-align:center;">Publications data not found.</p>';
+          return;
+        }
+
+        const yearBlocks = journalSection.querySelectorAll('.year-block');
+        let count = 0;
+        const max = 5; 
+        container.innerHTML = ''; 
+
+        for (const block of yearBlocks) {
+          if (count >= max) break;
+          const year = block.querySelector('.year').innerText; 
+          const lis = block.querySelectorAll('li'); 
+
+          for (const li of lis) {
+            if (count >= max) break;
+            const div = document.createElement('div');
+            div.className = 'pub-item';
+            const h3 = document.createElement('h3');
+            h3.textContent = li.textContent;
+            const p = document.createElement('p');
+            p.textContent = year + " | Journal";
+            div.appendChild(h3);
+            div.appendChild(p);
+            container.appendChild(div);
+            count++;
+          }
+        }
+        if (count === 0) container.innerHTML = '<p style="text-align:center;">No publications found.</p>';
+
+      } catch (e) {
+        console.error("Error loading publications:", e);
+      }
+    }
+
+    // 2. Featured Projects 불러오기 (Projects.html -> Home)
+    async function loadFeaturedProjects() {
+      const container = document.getElementById('featured-project-list');
+
+      try {
+        const response = await fetch('projects.html');
+        if (!response.ok) throw new Error("Failed to fetch");
+
+        const text = await response.text();
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(text, 'text/html');
+
+        // projects.html에서 .ongoing-card 클래스를 가진 요소들을 찾음
+        const ongoingCards = doc.querySelectorAll('.ongoing-card');
+
+        container.innerHTML = ''; // 로딩 메시지 제거
+
+        const maxProjects = 2;
+        let count = 0;
+
+        ongoingCards.forEach(card => {
+          if (count >= maxProjects) return;
+
+          // 이미지, 제목, 날짜 등 정보 추출
+          const bgStyle = card.querySelector('.ongoing-img').style.backgroundImage; 
+          const imgSrc = bgStyle.slice(5, -2); // url("...") 제거
+          const badge = card.querySelector('.badge').innerText;
+          const title = card.querySelector('h3').innerText;
+          const dateText = card.querySelector('.date-text').innerText;
+
+          // Home 페이지용 카드 생성 (Link를 projects.html#in-progress로 고정)
+          const link = document.createElement('a');
+          link.href = 'projects.html#in-progress'; // 클릭 시 Projects 페이지로 이동
+          link.className = 'project-link';
+          // target="_blank" 제거 (같은 탭에서 이동)
+
+          link.innerHTML = `
+            <div class="project-card">
+              <img src="${imgSrc}" class="project-img" alt="${title}">
+              <div class="project-overlay">
+                <h3>${title}</h3>
+                <p>${badge} | ${dateText}</p>
+              </div>
+            </div>
+          `;
+
+          container.appendChild(link);
+          count++;
+        });
+
+        if (count === 0) {
+          container.innerHTML = '<p style="text-align:center; grid-column:1/-1;">No featured projects found.</p>';
+        }
+
+      } catch (e) {
+        console.error("Error loading projects:", e);
+        container.innerHTML = '<p style="text-align:center; color:red; grid-column:1/-1;">[Error] Failed to load projects. (Need Local Server)</p>';
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      loadRecentPublications();
+      loadFeaturedProjects();
+    });
+  </script>
+
+</body>
+</html>
