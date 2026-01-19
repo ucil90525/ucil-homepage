@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Publications - URBAN AI Lab</title>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    /* ================= 공통 스타일 ================= */
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Inter", "Apple SD Gothic Neo", sans-serif; }
+    body { background: #ffffff; color: #0f172a; line-height: 1.7; }
+    .inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    a { text-decoration: none; color: inherit; }
+
+    /* ================= HEADER ================= */
+    header {
+      position: fixed; top: 0; left: 0; width: 100%; height: 72px; z-index: 1000;
+      display: flex; align-items: center; background: transparent; transition: all 0.3s ease;
+    }
+    header.scrolled { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(10px); }
+    header .inner { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+
+    /* 로고 스타일 */
+    .logo { 
+      font-size: 20px; 
+      font-weight: 700; 
+      letter-spacing: 0.04em; 
+      color: #ffffff; 
+      text-decoration: none; 
+      cursor: pointer;
+    }
+
+    .main-nav { display: flex; gap: 32px; align-items: center; }
+    .main-nav a { color: #ffffff; font-size: 15px; font-weight: 500; position: relative; }
+    .main-nav a::after { content: ""; position: absolute; bottom: -6px; left: 0; width: 0%; height: 2px; background: #ffffff; transition: width 0.3s ease; }
+    .main-nav a:hover::after { width: 100%; }
+
+    /* ================= Dropdown CSS ================= */
+    .nav-item { position: relative; }
+    .dropdown-menu {
+      position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(10px);
+      background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(12px); border-radius: 15px;
+      min-width: 190px; padding: 12px 0; opacity: 0; visibility: hidden; transition: 0.3s; z-index: 999;
+    }
+    .dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+    .dropdown-menu a { display: block; padding: 12px 24px; font-size: 14px; color: #cbd5e1; text-align: center; cursor: pointer; }
+    .dropdown-menu a:hover { color: #ffffff; background: rgba(255, 255, 255, 0.05); }
+    .dropdown-menu a::after { display: none; }
+
+    /* ================= SUB-HERO ================= */
+    .sub-hero {
+      width: 100%;
+      height: 400px;
+      padding-top: 72px;
+      padding-bottom: 72px;
+      
+      background: linear-gradient(rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.9)),
+                  url("assets/images/publications/publications_bg.jpg");
+      background-position: center center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      
+      color: #ffffff;
+      text-align: center;
+      position: relative;
+    }
+    .sub-hero h1 { font-size: 48px; font-weight: 800; letter-spacing: -0.02em; }
+    
+    /* ================= Publications Tabs ================= */
+    .research-tabs {
+      position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 40px; padding-bottom: 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+      width: auto;
+      max-width: 100%;
+      overflow-x: auto;
+    }
+    .research-tabs .tab {
+      background: none; border: none; padding: 12px 0;
+      font-size: 16px; font-weight: 600; color: rgba(255, 255, 255, 0.6); cursor: pointer; position: relative;
+      white-space: nowrap;
+    }
+    .research-tabs .tab::after {
+      content: ""; position: absolute; bottom: -1px; left: 0; width: 0%; height: 3px; background: #ffffff; transition: width 0.3s ease;
+    }
+    .research-tabs .tab.active { color: #ffffff; }
+    .research-tabs .tab.active::after { width: 100%; }
+
+    section { padding: 100px 0; }
+    .section-title { font-size: 34px; font-weight: 700; text-align: center; margin-bottom: 60px; }
+    .tab-content { display: none; max-width: 900px; margin: 0 auto; animation: fadeIn 0.5s ease; }
+    .tab-content.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* ===== Publication List ===== */
+    .year-block { margin-bottom: 48px; }
+    .year { font-size: 22px; font-weight: 700; margin-bottom: 18px; border-left: 4px solid #0f172a; padding-left: 12px; }
+    .pub-list li { margin-bottom: 14px; color: #334155; }
+    
+    .pub-list li a {
+        display: block; 
+        color: #334155;
+        transition: color 0.2s ease;
+    }
+    .pub-list li a:hover {
+        color: #2563eb; 
+        text-decoration: underline;
+    }
+
+    /* ===== Award Gallery ===== */
+    .award-grid { display: grid; grid-template-columns:  repeat(3, 1fr); gap: 24px; }
+    .award-grid img { width: 100%; height: 400px; object-fit: cover; border-radius: 14px; box-shadow: 0 12px 30px rgba(0,0,0,.15); }
+
+    /* ================= FOOTER (가로 배치형 업데이트) ================= */
+    footer { 
+      padding: 50px 0; 
+      background: #0f172a; 
+      color: #94a3b8; 
+      font-size: 14px; 
+      text-align: center; 
+    }
+
+    .footer-container h3 { 
+      color: #fff; 
+      margin-bottom: 20px; 
+      font-size: 18px; 
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      
+      /* 다른 페이지와의 통일성을 위해 높이 초기화 */
+      min-height: auto; 
+      line-height: 1.2;
+    }
+
+    .footer-info {
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+    
+    .footer-info p {
+      margin-bottom: 6px; /* 줄 간격 */
+    }
+
+    /* 가로 배치를 위한 span 스타일 */
+    .footer-info span {
+      display: inline-block;
+      margin: 0 2px;
+    }
+    
+    /* 구분선(|) 스타일 */
+    .footer-info .sep {
+      color: #475569;
+      margin: 0 10px;
+      font-size: 12px;
+      vertical-align: middle;
+    }
+
+    .footer-copy { 
+      margin-top: 25px; 
+      padding-top: 20px; 
+      border-top: 1px solid rgba(255,255,255,0.1); 
+      color: #64748b; 
+      font-size: 13px;
+    }
+
+    /* 반응형 미디어 쿼리 */
+    @media (max-width: 768px) {
+      .footer-info span { display: block; margin: 4px 0; }
+      .footer-info .sep { display: none; }
+    }
+  </style>
+</head>
+
+<body>
+
+<header id="header">
+  <div class="inner">
+    <a href="index.html" class="logo">URBAN AI LAB</a>
+
+    <nav class="main-nav">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="projects.html">Projects</a>
+      
+      <div class="nav-item dropdown">
+        <a href="publications.html" style="font-weight: 700;">Publications</a>
+        <div class="dropdown-menu">
+          <a href="javascript:void(0)" onclick="switchTab('journal')">Journal</a>
+          <a href="javascript:void(0)" onclick="switchTab('conference')">Conference</a>
+          <a href="javascript:void(0)" onclick="switchTab('award')">Award</a>
+          <a href="javascript:void(0)" onclick="switchTab('patent')">Patents & IP</a>
+          <a href="javascript:void(0)" onclick="switchTab('book')">Book</a>
+        </div>
+      </div>
+      
+      <div class="nav-item dropdown">
+        <a href="members.html">Members</a>
+        <div class="dropdown-menu">
+          <a href="members.html#professor">Professor</a>
+          <a href="members.html#researcher">Researcher</a>
+          <a href="members.html#student">Student</a>
+        </div>
+      </div>
+      
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<section class="sub-hero">
+  <h1>Publications</h1>
+  <div class="research-tabs">
+    <button class="tab active" data-tab="journal">Journal</button>
+    <button class="tab" data-tab="conference">Conference</button>
+    <button class="tab" data-tab="award">Award</button>
+    <button class="tab" data-tab="patent">Patents & IP</button>
+    <button class="tab" data-tab="book">Book</button>
+  </div>
+</section>
+
+<section>
+  <div class="inner">
+    <h2 class="section-title" id="pub-title">Journal</h2>
+
+    <div class="tab-content active" id="section-journal">
+      
+      <div class="year-block">
+        <div class="year">2025</div>
+        <ul class="pub-list">
+          <li>
+            <a href="https://doi.org/10.9728/dcs.2025.26.11.3239" target="_blank">
+              남우민, 김장현 and 박건철. (2025). 데이터 기반 생활권 계획을 통한 노인복지시설 최적 배치와 정책 효과 검증. 디지털콘텐츠학회논문지, 26(11), 3239-3249.
+            </a>
+          </li>
+          <li>
+            <a href="https://doi.org/10.9717/kmms.2025.28.9.1339" target="_blank">
+              정해선, 이해인, 고영민, 김예은, 최사라 and 박건철. (2025). Latent Profiles and Regression-Based Analysis of Socio-Emotional Development: Evidence from Longitudinal Data and Interpretable Machine Learning. 멀티미디어학회논문지, 28(9), 1339-1357.
+            </a>
+          </li>
+          <li>
+            <a href="https://doi.org/10.1177/21582440251377385" target="_blank">
+              Jung, H. S., Lee, H., & Park, K. C. (2025). Analysis of UX Elements in Educational Applications for Young Children and Implementation of ISO/IEC 25010 Quality Standards. Sage Open, 15(3).
+            </a>
+          </li>
+          <li>
+            <a href="https://doi.org/10.7472/jksii.2025.26.4.55" target="_blank">
+              정광식, 최사라 and 박건철. (2025). 유아의 안전한 대화를 지원하는 AI 동반자 서비스 아키텍처:유해 언어 필터링을 중심으로. 인터넷정보학회논문지, 26(4), 55-68.
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="year-block">
+        <div class="year">2024</div>
+        <ul class="pub-list">
+          <li>
+            <a href="http://dx.doi.org/10.7472/jksii.2024.25.6.71" target="_blank">
+              남우민, 양재훈 and 박건철. (2024). BERTopic을 활용한 미래유망기술 도출 방법론 제안 : 건설·부동산 산업의 디지털 전환 방향 사례를 중심으로. 인터넷정보학회논문지, 25(6), 71-80.
+            </a>
+          </li>
+          <li>
+            <a href="http://dx.doi.org/10.31693/KJPS.2024.09.47.3.5" target="_blank">
+              김대환, 정광식, 남우민, 권영상 and 박건철. (2024). 인구특성 데이터 기반 대한민국 인구실태 분석: 229개 기초지자체를 대상으로. 한국인구학, 47(3), 117-153.
+            </a>
+          </li>
+          <li>
+            <a href="http://dx.doi.org/10.9728/dcs.2024.25.8.2225" target="_blank">
+              정광식, 양재훈 and 박건철. (2024). 유아 특성을 고려한 AI 윤리 프레임워크와 규제 방향 도출에 관한 연구. 디지털콘텐츠학회논문지, 25(8), 2225-2237.
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="year-block">
+        <div class="year">2023</div>
+        <ul class="pub-list">
+          <li>
+            <a href="https://doi.org/10.7472/jksii.2023.24.6.31" target="_blank">
+              이승하, 김대환, 정광식 and 박건철. (2023). Hourglass 기반 공공도입연계형 국가연구개발사업성과평가 프레임워크 제안: 빅데이터 기반 인공지능 도시계획 기술개발 사업 사례를 바탕으로. 인터넷정보학회논문지, 24(6), 31-39.
+            </a>
+          </li>
+          <li>
+            <a href="http://dx.doi.org/10.7472/jksii.2023.24.5.97" target="_blank">
+              박지혜, 김대환 and 박건철. (2023). Where and Why? A Novel Approach for Prioritizing Implementation Points of Public CCTVs using Urban Big Data. 인터넷정보학회논문지, 24(5), 97-106.
+            </a>
+          </li>
+          <li>
+            <a href="http://dx.doi.org/10.7472/jksii.2023.24.4.65" target="_blank">
+              김대환, 남우민 and 박건철. (2023). Application of Urban Computing to Explore Living Environment Characteristics in Seoul : Integration of S-Dot Sensor and Urban Data. 인터넷정보학회논문지, 24(4), 65-76.
+            </a>
+          </li>
+          <li>
+            <a href="https://doi.org/10.9728/dcs.2023.24.12.3199" target="_blank">
+              장수정, 한승희, 박건철. (2023). 유아용 인공지능 동반자의 사회적 특성 연구. 디지털콘텐츠학회논문지, 24(12), 3199-3211.
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="year-block">
+        <div class="year">2022</div>
+        <ul class="pub-list">
+          <li>
+            <a href="https://doi.org/10.7472/jksii.2022.23.6.79" target="_blank">
+              Nam, Woo-Min & Park, Keon Chul. (2022). 스마트도시 구현을 위한 시민참여의 역할과 방향에 관한 연구. 인터넷정보학회논문지, 23(6), 79-86.
+            </a>
+          </li>
+          <li>
+            <a href="http://dx.doi.org/10.3837/tiis.2022.06.009" target="_blank">
+              Keon Chul Park and Sangmin Lee. (2022). Investigating Consumer Innovativeness for New Media Infusion: Role of Literacy in the Context of OTT Services in Korea. KSII Transactions on Internet and Information Systems, 16(6), 1935-1952.
+            </a>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="tab-content" id="section-conference">
+
+      <div class="year-block">
+        <div class="year">2025</div>
+        <ul class="pub-list">
+          <li>이해인, 정해선, 박건철. (2025). 인공지능 기반 유아 교육 서비스에서의 학습 패턴과 사회정서적 상호작용 분석. 한국인터넷정보학회 춘계학술발표대회.</li>
+          <li>박건철. (2025). 전자정부에서 AI정부로의 전환-AI 시대의 정부 서비스의 혁신과 변화. 경인행정학회 춘계학술대회.</li>
+          <li>남우민, 정재영, 박건철. (2025). Mesa-Geo ABM을 활용한 생활권 내 사회기반시설 최적화 배치 전략 및 효과성 분석: 노인복지시설 사례를 바탕으로. 한국데이터사이언스학회 춘계종합학술대회.</li>
+          <li>고영민, 정해선, 박건철. (2025). 소형 멀티모달 거대 언어 모델의 차트 기반 질의응답을 위한 다중 작업 지식 증류 기법 제안. 한국데이터사이언스학회 춘계종합학술대회.</li>
+          <li>정해선, 이해인, 박건철. (2025). 유아 사회정서 발달 지원을 위한 한국어 유해 언어 데이터셋 구축 및 자동 필터링 프레임워크 제안. 한국데이터사이언스학회 춘계종합학술대회.</li>
+          <li>양재훈, 정재영, 박건철. (2025). AI 신약개발 시대의 개방형 혁신 전략 프레임워크 : 국내 사례 분석을 통한 협력 구조의 유형화 분석. 한국데이터사이언스학회 춘계종합학술대회.</li>
+          <li>Choi, S. R., Go, Y. M., & Park, K. C. (2025). Capturing Children's Attention: AI-driven Analysis of Thumbnail Design in YouTube Educational Content. Pacific-Asia Conference on Information Systems (PACIS 2025).</li>
+          <li>Moon, J. H., Choi, O. J., Choi, S. R., Park, K. C., Lee, J. R., & Shin, W. S. (2025). CSAF: Child-like Speech Augmentation Framework through Adult Speech Data Modulation. KSII Transactions on Internet and Information Systems (International Conference context).</li>
+        </ul>
+      </div>
+
+      <div class="year-block">
+        <div class="year">2024</div>
+        <ul class="pub-list">
+          <li>김대환, 정광식, 박건철. (2024). 인구특성 기반 도시 분류 및 진단을 위한 인구구조·인구이동 빅데이터 분석 방법론 설계 연구. 한국인터넷정보학회 춘계학술발표대회.</li>
+          <li>남우민, 양재훈, 박건철. (2024). 특허 네트워크 분석을 활용한 국토교통 기술 연결 지형 구성과 핵심전략 분야 탐색. 한국인터넷정보학회 춘계학술발표대회.</li>
+          <li>박건철, 김대환, 양재훈, 남우민, 정광식. (2024). 인구특성 변화 분석을 통한 도시유형 분류 및 지속가능성 진단. 한반도미래인구연구원 학술대회.</li>
+          <li>김대환, 정광식, 박건철. (2024). 인구특성 데이터 기반 대한민국 인구실태 분석: 229개 기초지자체를 대상으로. 한국인구학회 전기학술대회.</li>
+          <li>Kim, D. H., Jeong, K. S., & Park, K. C. (2024). Exploratory study of big data analytics methodology for classifying city types based on population characteristics-based on 229 local governments in Republic of Korea. 25th IUSAM.</li>
+          <li>Jeong, K. S., Kwon, Y. S., & Park, K. C. (2024). Impact of Land Uses on Municipal Waste Generation. 25th IUSAM.</li>
+          <li>양재훈, 박건철. (2024). 멀티모달 접근을 통한 유아 발화 감정 인식: 음성 주파수 분석과 텍스트 기반 검증. 한국인터넷정보학회 추계학술대회.</li>
+          <li>정광식, 최사라, 박건철. (2024). 유아의 인공지능 동반자 활용을 위한 사용자 경험 요소 도출. 한국인터넷정보학회 추계학술대회.</li>
+          <li>최사라, 정광식, 박건철. (2024). 유튜브 아동 콘텐츠의 영상 디자인과 대본 구성 요소가 조회수에 미치는 영향. 한국인터넷정보학회 추계학술대회.</li>
+          <li>남우민, 박건철. (2024). 공공분야 인공지능 도입 활성화를 위한 인프라 구축 방안에 관한 탐색적 연구. 국내학술대회.</li>
+          <li>Jeong, K. S., Nam, W. M., & Park, K. C. (2024). An Exploratory Analysis for Deriving Linguistic Factors for Children-AI Interaction. KSII The 16th International Conference on Internet (ICONI 2024).</li>
+          <li>Yang, J. H., Nam, W. M., & Park, K. C. (2024). Emotion Recognition in Child Speech through Multimodal Data: Considerations for Speech and Text Analysis. KSII The 16th International Conference on Internet (ICONI 2024).</li>
+          <li>Choi, S. R., & Park, K. C. (2024). Parental Speech Patterns and Children’s Emotional Responses: A Study Using YouTube Vlog Data. KSII The 16th International Conference on Internet (ICONI 2024).</li>
+        </ul>
+      </div>
+
+      <div class="year-block">
+        <div class="year">2023</div>
+        <ul class="pub-list">
+          <li>박건철. (2023). 임무중심 R&D를 위한 국가연구개발사업 성과평가지표 연구. 한국정책분석평가학회 춘계학술대회.</li>
+          <li>김대환, 남우민, 박건철. (2023). S-Dot 빅데이터를 통해 확인한 서울시 생활환경별 특징과 그에 영향을 미치는 도시계획 특성. 한국인터넷정보학회 춘계학술대회.</li>
+          <li>남우민, 김대환, 박건철. (2023). 도시적 관점에서 저출산 대응을 위한 지표 탐색연구. 한국인터넷정보학회 춘계학술대회.</li>
+          <li>양재훈, 박건철. (2023). 디지털 전환과 바이오제약산업 혁신사례 연구. 한국인터넷정보학회 춘계학술대회.</li>
+          <li>Nam, W. M., Kim, D. H., & Park, K. C. (2023). Rethinking the Locus and Focus of Citizen Participation: Role of UX and UI for Urban planning Application. KSII The 18th Asia Pacific International Conference on Information Science and Technology (APIC-IST 2023).</li>
+          <li>양재훈, 박건철. (2023). 국토교통 데이터 생태계 활성화를 위한 데이터 혁신클러스터 개념 정립. 한국정책분석평가학회 하계학술대회.</li>
+          <li>장수정, 박건철. (2023). 유아를 위한 대화 중심 인공지능 동반자의 사회적 특성 및 기능. 한국인터넷정보학회 추계학술대회.</li>
+          <li>한승희, 박건철. (2023). 개인화된 인공지능 동반자 설계를 위한 개념적 프레임워크 제안. 한국인터넷정보학회 추계학술대회.</li>
+          <li>박건철, 정광식, 김대환, 이승하, 양재훈. (2023). 국토교통 데이터 생태계 활성화를 위한 데이터 혁신 클러스터 개념 정의 및 핵심 기능 도출에 관한 연구. 한국인터넷정보학회 추계학술대회.</li>
+          <li>정광식, 이승하, 김대환, 박건철, 남우민. (2023). 빅데이터 기반 인공지능 도시계획의 성과평가 프레임 및 지표 정의에 관한 연구. 한국인터넷정보학회 추계학술대회.</li>
+          <li>Han, S. H., Chang, S. J., & Park, K. C. (2023). AI Companion for Children: A Service Architecture to aid Social-Emotional Development. KSII The 15th International Conference on Internet (ICONI 2023).</li>
+        </ul>
+      </div>
+
+      <div class="year-block">
+        <div class="year">2022</div>
+        <ul class="pub-list">
+          <li>박건철, 김대환. (2022). 사용자 참여형 빅데이터 기반 건강 위험도 관리 서비스에서의 보안 프레임에 관한 연구. 2022년 한국인터넷정보학회 춘계학술발표대회.</li>
+          <li>박건철, 김관철, 김대환, 양재훈. (2022). 시민참여형 인터렉티브 소통 플랫폼 개발을 위한 핵심성공요인 도출 : 도시계획지원플랫폼의 UX/UI를 중심으로. 2022 한국산학기술학회 춘계학술대회.</li>
+          <li>박건철, 김대환, 남우민. (2022). 공공분야 인공지능기반 도시계획 플랫폼의 성과평가 방법 및 평가지표에 관한 탐색연구. 2022 한국인터넷정보학회 추계학술대회.</li>
+          <li>김대환, 남우민, 박건철. (2022). 서울시 S-Dot 빅데이터를 이용한 생활환경 특성 도출에 대한 방법론 탐색연구. 2022 한국인터넷정보학회 추계학술대회.</li>
+          <li>김대환, 남우민, 박건철. (2022). 특허 네트워크분석을 통한 스마트시티 기술동향 분석 및 전략기술 예측에 관한 연구. 2022 한국인터넷정보학회 추계학술대회.</li>
+          <li>Park, K. C. (2022). A Study on the Performance Evaluation Framework for AI-Driven Systems in the Public Sector. KSII The 14th International Conference on Internet (ICONI 2022).</li>
+          <li>Kim, D. W., Kim, K. C., & Park, K. C. (2022). Analysis of Urban Planning Online Platform based on the Citizen Participation Stage. KSII The 14th International Conference on Internet (ICONI 2022).</li>
+          <li>Nam, W. M., & Park, K. C. (2022). A Study on the Improvement of Patent Evaluation in National R&D Performance Evaluation. KSII The 14th International Conference on Internet (ICONI 2022).</li>
+          <li>Yang, J. H. (2022). Evaluating Mission-Oriented R&D Programs: focused on Smart City Projects. KSII The 14th International Conference on Internet (ICONI 2022).</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="tab-content" id="section-award">
+      <div class="award-grid">
+        <img src="assets/images/publications/publications_award6.png" alt="Award 6">
+        <img src="assets/images/publications/publications_award5.png" alt="Award 5">
+        <img src="assets/images/publications/publications_award4.png" alt="Award 4">
+        <img src="assets/images/publications/publications_award3.png" alt="Award 3">
+        <img src="assets/images/publications/publications_award2.png" alt="Award 2">
+        <img src="assets/images/publications/publications_award1.png" alt="Award 1">       
+      </div>
+    </div>
+
+    <div class="tab-content" id="section-patent">
+      <div class="award-grid">
+        <img src="assets/images/publications/publications_patents&ip1.png" alt="Patents & IP 1">
+        <img src="assets/images/publications/publications_patents&ip2.png" alt="Patents & IP 2">
+        <img src="assets/images/publications/publications_patents&ip3.png" alt="Patents & IP 3">
+      </div>
+    </div>
+
+    <div class="tab-content" id="section-book">
+      <div class="award-grid">
+        <img src="assets/images/publications/publications_book1.png" alt="Book 1">
+        <img src="assets/images/publications/publications_book2.png" alt="Book 2">
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="inner">
+    <div class="footer-container">
+      <h3>URBAN AI LAB</h3>
+      
+      <div class="footer-info">
+        <p>
+          <span>Department of Business Administration</span>
+          <span class="sep">|</span>
+          <span>Tech University of Korea</span>
+        </p>
+        
+        <p>
+          <span>Rm 412, Engineering Bldg D, 237 Sangidaehak-ro, Siheung-si, Gyeonggi-do, Korea</span>
+          <span class="sep">|</span>
+          <span>Email: urbanai-eh@tukorea.ac.kr</span>
+        </p>
+      </div>
+
+      <div class="footer-copy">
+        <p>© 2026 URBAN AI LAB. All Rights Reserved.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const header = document.getElementById("header");
+  window.addEventListener("scroll", () => {
+    header.classList.toggle("scrolled", window.scrollY > 80);
+  });
+
+  const tabs = document.querySelectorAll(".tab");
+  const contents = document.querySelectorAll(".tab-content");
+  const title = document.getElementById("pub-title");
+
+  // 탭 전환 함수
+  function switchTab(tabName) {
+    // 1. 모든 탭/콘텐츠 비활성화
+    tabs.forEach(t => t.classList.remove("active"));
+    contents.forEach(c => c.classList.remove("active"));
+
+    // 2. 선택된 탭 찾기
+    const selectedTab = document.querySelector(`.tab[data-tab="${tabName}"]`);
+    
+    // 3. 선택된 콘텐츠 찾기 (ID prefix 'section-' 사용)
+    const selectedContent = document.getElementById('section-' + tabName);
+
+    if (selectedTab && selectedContent) {
+      selectedTab.classList.add("active");
+      selectedContent.classList.add("active");
+      title.textContent = selectedTab.textContent;
+    }
+  }
+
+  // 탭 메뉴 클릭 이벤트
+  tabs.forEach(tab => {
+    tab.addEventListener("click", () => {
+      switchTab(tab.dataset.tab);
+    });
+  });
+
+  // URL 해시값(#)을 읽어 해당 탭 열기 (스크롤 없이)
+  window.addEventListener('DOMContentLoaded', () => {
+    const hash = window.location.hash.replace('#', '');
+    // hash가 patent로 들어올 때 정상적으로 처리됨
+    if (hash && (hash === 'journal' || hash === 'conference' || hash === 'award' || hash === 'patent' || hash === 'book')) {
+      switchTab(hash);
+    }
+  });
+</script>
+
+</body>
+</html>
