@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+
+<html lang="ko">
+
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>URBAN AI Lab - Home</title>
+
+
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+
+
+  <style>
+
+    /* [공통 스타일] */
+
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Inter", "Apple SD Gothic Neo", sans-serif; }
+
+    body { background: #ffffff; color: #0f172a; line-height: 1.6; overflow-x: hidden; }
+
+
+
+    .inner {
+
+      max-width: 1200px;
+
+      margin: 0 auto;
+
+      padding: 0 24px;
+
+    }
+
+
+
+    /* ================= HEADER ================= */
+
+    header {
+
+      position: fixed; top: 0; left: 0; width: 100%; height: 72px; z-index: 1000;
+
+      display: flex; align-items: center; background: transparent; transition: all 0.3s ease;
+
+    }
+
+    header.scrolled { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(10px); }
+
+    header .inner { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+
+   
+
+    .logo {
+
+      font-size: 20px; font-weight: 700; letter-spacing: 0.04em; color: #ffffff;
+
+      text-decoration: none; cursor: pointer;
+
+    }
+
+    .main-nav { display: flex; gap: 32px; align-items: center; }
+
+    .main-nav a { text-decoration: none; color: #ffffff; font-size: 15px; font-weight: 500; position: relative; }
+
+    .main-nav a::after { content: ""; position: absolute; bottom: -6px; left: 0; width: 0%; height: 2px; background: #ffffff; transition: width 0.3s ease; }
+
+    .main-nav a:hover::after { width: 100%; }
+
+
+
+    /* Dropdown CSS */
+
+    .nav-item { position: relative; }
+
+    .dropdown-menu {
+
+      position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(10px);
+
+      background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(12px); border-radius: 15px;
+
+      min-width: 190px; padding: 12px 0; opacity: 0; visibility: hidden; transition: 0.3s; z-index: 999;
+
+    }
+
+    .dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+
+    .dropdown-menu a { display: block; padding: 12px 24px; font-size: 14px; color: #cbd5e1; text-decoration: none; text-align: center; }
+
+    .dropdown-menu a:hover { color: #fff; background: rgba(255,255,255,0.05); }
+
+    .dropdown-menu a::after { display: none; }
+
+
+
+    /* ================= HERO VIDEO (Full Screen) ================= */
+
+    .hero {
+
+      position: relative;
+
+      height: 100vh;
+
+      width: 100%;
+
+      overflow: hidden;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      text-align: center;
+
+      color: #ffffff;
+
+    }
+
+
+
+    .hero-video-container {
+
+      position: absolute;
+
+      top: 0; left: 0;
+
+      width: 100%; height: 100%;
+
+      z-index: -1;
+
+    }
+
+
+
+    .hero-video {
+
+      width: 100%;
+
+      height: 100%;
+
+      object-fit: cover;
+
+    }
+
+
+
+    .hero-video-overlay {
+
+      position: absolute;
+
+      top: 0; left: 0;
+
+      width: 100%; height: 100%;
+
+      background: rgba(0, 0, 0, 0.5);
+
+      z-index: 0;
+
+    }
+
+
+
+    .hero-content { z-index: 10; padding: 0 24px; max-width: 900px; }
+
+   
+
+    .hero-content h1 {
+
+      font-size: 56px; font-weight: 800; line-height: 1.2; margin-bottom: 24px; letter-spacing: -0.02em;
+
+      opacity: 0; transform: translateY(30px); animation: fadeInUp 1s ease-out forwards 0.5s;
+
+    }
+
+    .hero-content p {
+
+      font-size: 20px; opacity: 0; font-weight: 300;
+
+      transform: translateY(30px); animation: fadeInUp 1s ease-out forwards 0.8s;
+
+    }
+
+
+
+    @keyframes fadeInUp {
+
+      to { opacity: 1; transform: translateY(0); }
+
+    }
+
+
+
+    /* 스크롤 유도 화살표 스타일 */
+
+    .scroll-indicator {
+
+      position: absolute;
+
+      bottom: 40px;
+
+      left: 50%;
+
+      transform: translateX(-50%);
+
+      z-index: 20;
+
+      color: rgba(255, 255, 255, 0.7);
+
+      cursor: pointer;
+
+      animation: bounce 2s infinite;
+
+     
+
+      /* 사라질 때 부드럽게 */
+
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+
+      opacity: 1;
+
+      visibility: visible;
+
+    }
+
+   
+
+    .scroll-indicator:hover { color: #fff; }
+
+
+
+    /* JS로 .hidden 클래스가 붙으면 사라짐 */
+
+    .scroll-indicator.hidden {
+
+      opacity: 0;
+
+      visibility: hidden;
+
+      pointer-events: none; /* 클릭 방지 */
+
+    }
+
+
+
+    @keyframes bounce {
+
+      0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+
+      40% { transform: translateX(-50%) translateY(-10px); }
+
+      60% { transform: translateX(-50%) translateY(-5px); }
+
+    }
+
+
+
+    /* ================= SECTION COMMON ================= */
+
+    section { padding: 100px 0; }
+
+    .section-title { font-size: 32px; font-weight: 700; text-align: center; margin-bottom: 60px; position: relative; }
+
+    .section-title::after { content: ""; display: block; width: 40px; height: 3px; margin: 15px auto 0; background: #0f172a; }
+
+    .section-gray { background: #f8fafc; }
+
+
+
+    /* ================= SCROLL REVEAL ANIMATION ================= */
+
+    .scroll-reveal {
+
+      opacity: 0;
+
+      transform: translateY(40px);
+
+      transition: all 0.8s ease-out;
+
+    }
+
+    .scroll-reveal.active {
+
+      opacity: 1;
+
+      transform: translateY(0);
+
+    }
+
+
+
+    /* ================= STATISTICS ================= */
+
+    .stats-container { background: #0f172a; padding: 60px 0; color: #ffffff; }
+
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; text-align: center; }
+
+    .stat-item h2 { font-size: 42px; font-weight: 800; color: #38bdf8; margin-bottom: 5px; }
+
+    .stat-item p { font-size: 13px; opacity: 0.6; text-transform: uppercase; }
+
+
+
+    /* ================= FEATURED PROJECTS ================= */
+
+    .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
+
+    .project-link { text-decoration: none; color: inherit; display: block; }
+
+    .project-card { position: relative; border-radius: 16px; overflow: hidden; height: 300px; cursor: pointer; }
+
+    .project-img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s; }
+
+    .project-card:hover .project-img { transform: scale(1.1); }
+
+    .project-overlay {
+
+      position: absolute; inset: 0;
+
+      background: linear-gradient(transparent, rgba(15, 23, 42, 0.9));
+
+      display: flex; flex-direction: column; justify-content: flex-end;
+
+      padding: 30px; color: white;
+
+    }
+
+    .project-overlay h3 { font-size: 20px; font-weight: 700; margin-bottom: 8px; line-height: 1.3; }
+
+    .project-overlay p { font-size: 14px; opacity: 0.8; font-weight: 300; }
+
+    #project-loading { text-align: center; color: #94a3b8; font-size: 14px; grid-column: 1 / -1; }
+
+
+
+    /* ================= PUBLICATIONS ================= */
+
+    .pub-list { max-width: 850px; margin: 0 auto; }
+
+    .pub-item { background: white; padding: 25px 30px; border-radius: 12px; margin-bottom: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); border-left: 4px solid #0f172a; text-align: left; }
+
+    .pub-item h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; line-height: 1.5; color: #1e293b; }
+
+    .pub-item p { font-size: 14px; color: #475569; font-weight: 500; }
+
+   
+
+    .pub-item a { text-decoration: none; color: inherit; transition: color 0.2s ease; display: block; }
+
+    .pub-item a:hover { color: #2563eb; text-decoration: underline; }
+
+
+
+    #pub-loading { text-align: center; color: #94a3b8; font-size: 14px; }
+
+
+
+    /* ================= VIDEO SECTION ================= */
+
+    .video-container-single { max-width: 800px; margin: 0 auto; }
+
+    .video-item { background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+
+    .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; background: #000; }
+
+    .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+
+    .video-info { padding: 20px; text-align: center; }
+
+    .video-info h3 { font-size: 17px; font-weight: 600; color: #1e293b; }
+
+
+
+    /* ================= FOOTER ================= */
+
+    footer {
+
+      padding: 50px 0;
+
+      background: #0f172a;
+
+      color: #94a3b8;
+
+      font-size: 14px;
+
+      text-align: center;
+
+    }
+
+
+
+    .footer-container h3 {
+
+      color: #fff;
+
+      margin-bottom: 20px;
+
+      font-size: 18px;
+
+      font-weight: 700;
+
+      letter-spacing: 0.05em;
+
+    }
+
+
+
+    .footer-info { line-height: 1.8; margin-bottom: 20px; }
+
+    .footer-info p { margin-bottom: 6px; }
+
+    .footer-info span { display: inline-block; margin: 0 2px; }
+
+    .footer-info .sep { color: #475569; margin: 0 10px; font-size: 12px; vertical-align: middle; }
+
+
+
+    .footer-copy {
+
+      margin-top: 25px;
+
+      padding-top: 20px;
+
+      border-top: 1px solid rgba(255,255,255,0.1);
+
+      color: #64748b;
+
+      font-size: 13px;
+
+    }
+
+
+
+    @media (max-width: 768px) {
+
+      .footer-info span { display: block; margin: 4px 0; }
+
+      .footer-info .sep { display: none; }
+
+      .hero-content h1 { font-size: 36px; }
+
+    }
+
+  </style>
+
+</head>
+
+
+
+<body>
+
+
+
+  <header id="header">
+
+    <div class="inner">
+
+      <a href="index.html" class="logo">URBAN AI LAB</a>
+
+      <nav class="main-nav">
+
+        <a href="index.html" style="font-weight: 700; color: #fff;">Home</a>
+
+        <a href="about.html">About</a>
+
+        <a href="projects.html">Projects</a>
+
+       
+
+        <div class="nav-item dropdown">
+
+          <a href="publications.html">Publications</a>
+
+          <div class="dropdown-menu">
+
+            <a href="publications.html#journal">Journal</a>
+
+            <a href="publications.html#conference">Conference</a>
+
+            <a href="publications.html#award">Award</a>
+
+            <a href="publications.html#patent">Patents & IP</a>
+
+            <a href="publications.html#book">Book</a>
+
+          </div>
+
+        </div>
+
+
+
+        <div class="nav-item dropdown">
+
+          <a href="members.html">Members</a>
+
+          <div class="dropdown-menu">
+
+            <a href="members.html#professor">Professor</a>
+
+            <a href="members.html#researcher">Researcher</a>
+
+            <a href="members.html#student">Student</a>
+
+          </div>
+
+        </div>
+
+       
+
+        <a href="contact.html">Contact</a>
+
+      </nav>
+
+    </div>
+
+  </header>
+
+
+
+  <section class="hero" id="home">
+
+    <div class="hero-video-container">
+
+      <video class="hero-video" autoplay muted loop playsinline>
+
+        <source src="assets/videos/index_bg.mp4" type="video/mp4">
+
+        Your browser does not support the video tag.
+
+      </video>
+
+      <div class="hero-video-overlay"></div>
+
+    </div>
+
+
+
+    <div class="hero-content">
+
+      <h1>Architecting the Next<br/>Generation of AI Cities</h1>
+
+      <p>Leading the paradigm shift in urban living through advanced AI and spatial intelligence.</p>
+
+    </div>
+
+
+
+    <div class="scroll-indicator" id="scrollArrow" onclick="scrollToStats()">
+
+      <i data-lucide="chevron-down" width="48" height="48"></i>
+
+    </div>
+
+  </section>
+
+
+
+  <div class="stats-container" id="stats">
+
+    <div class="inner">
+
+      <div class="stats-grid scroll-reveal">
+
+        <div class="stat-item"><h2 id="stat-pub-count">0</h2><p>Publications</p></div>
+
+        <div class="stat-item"><h2 id="stat-project-count">0</h2><p>Projects</p></div>
+
+        <div class="stat-item"><h2 id="stat-award-count">0</h2><p>Awards</p></div>
+
+        <div class="stat-item"><h2 id="stat-patent-count">0</h2><p>Patents & IP</p></div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <section id="projects">
+
+    <div class="inner">
+
+      <h2 class="section-title scroll-reveal">Featured Projects</h2>
+
+      <div class="project-grid scroll-reveal" id="featured-project-list">
+
+        <p id="project-loading">Loading projects from Projects page...</p>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <section class="section-gray" id="publications">
+
+    <div class="inner">
+
+      <h2 class="section-title scroll-reveal">Recent Publications</h2>
+
+      <div class="pub-list scroll-reveal" id="recent-pubs-list">
+
+        <p id="pub-loading">Loading recent publications...</p>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <section id="videos">
+
+    <div class="inner">
+
+      <h2 class="section-title scroll-reveal">Lab Video</h2>
+
+      <div class="video-container-single scroll-reveal">
+
+        <div class="video-item">
+
+          <div class="video-wrapper">
+
+            <iframe src="https://www.youtube.com/embed/PBmKGHWhTzA" allowfullscreen></iframe>
+
+          </div>
+
+          <div class="video-info">
+
+            <h3>Cheonan Communication Channel: ON</h3>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <footer>
+
+    <div class="inner">
+
+      <div class="footer-container">
+
+        <h3>URBAN AI LAB</h3>
+
+       
+
+        <div class="footer-info">
+
+          <p>
+
+            <span>Department of Business Administration</span>
+
+            <span class="sep">|</span>
+
+            <span>Tech University of Korea</span>
+
+          </p>
+
+         
+
+          <p>
+
+            <span>Rm 412, Engineering Bldg D, 237 Sangidaehak-ro, Siheung-si, Gyeonggi-do, Korea</span>
+
+            <span class="sep">|</span>
+
+            <span>Email: urbanai-eh@tukorea.ac.kr</span>
+
+          </p>
+
+        </div>
+
+ 
+
+        <div class="footer-copy">
+
+          <p>© 2026 URBAN AI LAB. All Rights Reserved.</p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </footer>
+
+
+
+  <script>
+
+    const header = document.getElementById("header");
+
+    const arrow = document.getElementById("scrollArrow");
+
+
+
+    // [수정] 스크롤 시 헤더 변경 및 화살표 영구 숨김 처리
+
+    window.addEventListener("scroll", () => {
+
+      // 1. 헤더 처리
+
+      if (window.scrollY > 50) header.classList.add("scrolled");
+
+      else header.classList.remove("scrolled");
+
+
+
+      // 2. 화살표 처리 (한번 숨겨지면 다시 나타나지 않음)
+
+      if (window.scrollY > 20) {
+
+        arrow.classList.add("hidden");
+
+      }
+
+      // 'else' 블록을 삭제하여 위로 다시 올려도 hidden 클래스가 제거되지 않음
+
+    });
+
+
+
+    // 화살표 클릭 시
+
+    function scrollToStats() {
+
+      arrow.classList.add("hidden");
+
+      document.getElementById('stats').scrollIntoView({ behavior: 'smooth' });
+
+    }
+
+   
+
+    // 아이콘 생성
+
+    lucide.createIcons();
+
+
+
+    // ================== SCROLL OBSERVER (애니메이션) ==================
+
+    const observerOptions = {
+
+      root: null,
+
+      rootMargin: "0px",
+
+      threshold: 0.15
+
+    };
+
+
+
+    const observer = new IntersectionObserver((entries, observer) => {
+
+      entries.forEach(entry => {
+
+        if (entry.isIntersecting) {
+
+          entry.target.classList.add('active');
+
+          observer.unobserve(entry.target);
+
+        }
+
+      });
+
+    }, observerOptions);
+
+
+
+    document.querySelectorAll('.scroll-reveal').forEach(el => {
+
+      observer.observe(el);
+
+    });
+
+
+
+
+
+    // ================== DATA LOADING & AUTO COUNT ==================
+
+    async function updateStats() {
+
+      try {
+
+        const pubResponse = await fetch('publications.html');
+
+        if (pubResponse.ok) {
+
+          const pubText = await pubResponse.text();
+
+          const parser = new DOMParser();
+
+          const doc = parser.parseFromString(pubText, 'text/html');
+
+
+
+          const journals = doc.querySelectorAll('#section-journal li').length;
+
+          const conferences = doc.querySelectorAll('#section-conference li').length;
+
+          const totalPubs = journals + conferences;
+
+
+
+          const awardImages = doc.querySelectorAll('#section-award img').length;
+
+          const awardLists = doc.querySelectorAll('#section-award li').length;
+
+          const awards = awardImages + awardLists;
+
+
+
+          const patentSection = doc.getElementById('section-patent');
+
+          let patents = 0;
+
+          if (patentSection) {
+
+             const patentImages = patentSection.querySelectorAll('img').length;
+
+             const patentLists = patentSection.querySelectorAll('li').length;
+
+             patents = patentImages + patentLists;
+
+          }
+
+
+
+          const pubEl = document.getElementById('stat-pub-count');
+
+          const awardEl = document.getElementById('stat-award-count');
+
+          const patentEl = document.getElementById('stat-patent-count');
+
+
+
+          if(pubEl) pubEl.innerText = totalPubs;
+
+          if(awardEl) awardEl.innerText = awards;
+
+          if(patentEl) patentEl.innerText = patents;
+
+        }
+
+
+
+        const projResponse = await fetch('projects.html');
+
+        if (projResponse.ok) {
+
+          const projText = await projResponse.text();
+
+          const parser = new DOMParser();
+
+          const doc = parser.parseFromString(projText, 'text/html');
+
+
+
+          const ongoingCount = doc.querySelectorAll('.ongoing-card').length;
+
+          const finishedCount = doc.querySelectorAll('.finished-card').length;
+
+          const totalProjects = ongoingCount + finishedCount;
+
+
+
+          const projEl = document.getElementById('stat-project-count');
+
+          if(projEl) projEl.innerText = totalProjects;
+
+        }
+
+
+
+      } catch (e) {
+
+        console.error("Stats update failed:", e);
+
+      }
+
+    }
+
+
+
+    async function loadRecentPublications() {
+
+      const container = document.getElementById('recent-pubs-list');
+
+      try {
+
+        const response = await fetch('publications.html');
+
+        if (!response.ok) throw new Error("Failed");
+
+        const text = await response.text();
+
+        const parser = new DOMParser();
+
+        const doc = parser.parseFromString(text, 'text/html');
+
+       
+
+        let section = doc.getElementById('section-journal') || doc.getElementById('journal');
+
+        if (!section) { container.innerHTML = '<p style="text-align:center;">No data.</p>'; return; }
+
+       
+
+        const blocks = section.querySelectorAll('.year-block');
+
+        let count = 0; const max = 5; container.innerHTML = '';
+
+       
+
+        for (const block of blocks) {
+
+          if (count >= max) break;
+
+          const year = block.querySelector('.year').innerText;
+
+          const lis = block.querySelectorAll('li');
+
+         
+
+          for (const li of lis) {
+
+            if (count >= max) break;
+
+            const anchor = li.querySelector('a');
+
+            let contentHtml = anchor ? anchor.outerHTML : li.innerHTML;
+
+            const div = document.createElement('div');
+
+            div.className = 'pub-item';
+
+            div.innerHTML = `<h3>${contentHtml}</h3><p>${year} | Journal</p>`;
+
+            container.appendChild(div);
+
+            count++;
+
+          }
+
+        }
+
+      } catch (e) { console.error(e); }
+
+    }
+
+
+
+    async function loadFeaturedProjects() {
+
+      const container = document.getElementById('featured-project-list');
+
+      try {
+
+        const response = await fetch('projects.html');
+
+        if (!response.ok) throw new Error("Failed");
+
+        const text = await response.text();
+
+        const parser = new DOMParser();
+
+        const doc = parser.parseFromString(text, 'text/html');
+
+        const cards = doc.querySelectorAll('.ongoing-card');
+
+        container.innerHTML = '';
+
+        let count = 0;
+
+        cards.forEach(card => {
+
+          if (count >= 2) return;
+
+          const bgStyle = card.querySelector('.ongoing-img').style.backgroundImage;
+
+          const imgSrc = bgStyle.slice(5, -2);
+
+          const badge = card.querySelector('.badge').innerText;
+
+          const title = card.querySelector('h3').innerText;
+
+          const date = card.querySelector('.date-text').innerText;
+
+          const link = document.createElement('a');
+
+          link.href = 'projects.html#in-progress';
+
+          link.className = 'project-link';
+
+          link.innerHTML = `<div class="project-card"><img src="${imgSrc}" class="project-img"><div class="project-overlay"><h3>${title}</h3><p>${badge} | ${date}</p></div></div>`;
+
+          container.appendChild(link); count++;
+
+        });
+
+      } catch (e) { container.innerHTML = '<p style="text-align:center;">Load failed (Need Server)</p>'; }
+
+    }
+
+
+
+    window.addEventListener('DOMContentLoaded', () => {
+
+      updateStats();
+
+      loadRecentPublications();
+
+      loadFeaturedProjects();
+
+    });
+
+  </script>
+
+
+
+</body>
+
+</html>
