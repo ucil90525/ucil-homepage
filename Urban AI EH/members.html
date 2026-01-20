@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Members - URBAN AI Lab</title>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    /* ================= 공통 스타일 ================= */
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Inter", "Apple SD Gothic Neo", sans-serif; }
+    body { background: #ffffff; color: #0f172a; line-height: 1.6; }
+    .inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    a { text-decoration: none; color: inherit; }
+
+    /* ================= HEADER ================= */
+    header {
+      position: fixed; top: 0; left: 0; width: 100%; height: 72px; z-index: 1000;
+      display: flex; align-items: center; background: transparent; transition: all 0.3s ease;
+    }
+    header.scrolled { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(10px); }
+    header .inner { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+
+    .logo { 
+      font-size: 20px; font-weight: 700; letter-spacing: 0.04em; color: #ffffff; 
+      text-decoration: none; cursor: pointer;
+    }
+
+    .main-nav { display: flex; gap: 32px; align-items: center; }
+    .main-nav a { color: #ffffff; font-size: 15px; font-weight: 500; position: relative; }
+    .main-nav a::after { content: ""; position: absolute; bottom: -6px; left: 0; width: 0%; height: 2px; background: #ffffff; transition: width 0.3s ease; }
+    .main-nav a:hover::after { width: 100%; }
+
+    /* ================= Dropdown CSS ================= */
+    .nav-item { position: relative; }
+    .dropdown-menu {
+      position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(10px);
+      background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(12px); border-radius: 15px;
+      min-width: 190px; padding: 12px 0; opacity: 0; visibility: hidden; transition: 0.3s; z-index: 999;
+    }
+    .dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+    .dropdown-menu a { display: block; padding: 12px 24px; font-size: 14px; color: #cbd5e1; text-align: center; cursor: pointer; }
+    .dropdown-menu a:hover { color: #ffffff; background: rgba(255, 255, 255, 0.05); }
+    .dropdown-menu a::after { display: none; }
+
+    /* ================= SUB-HERO ================= */
+    .sub-hero {
+      width: 100%;
+      height: 400px;
+      padding-top: 72px;
+      padding-bottom: 72px;
+      
+      background: linear-gradient(rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.9)),
+                  url("assets/images/members/members_bg.jpg");
+      background-position: center center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      
+      color: #ffffff;
+      text-align: center;
+      position: relative;
+    }
+    .sub-hero h1 { font-size: 48px; font-weight: 800; letter-spacing: -0.02em; margin: 0; padding: 0; line-height: 1.2; }
+
+    /* ================= Members Tabs ================= */
+    .Members-tabs {
+      position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 40px; padding-bottom: 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+    }
+    .Members-tabs .tab {
+      background: none; border: none; padding: 12px 0;
+      font-size: 16px; font-weight: 600; color: rgba(255, 255, 255, 0.6); cursor: pointer; position: relative;
+    }
+    .Members-tabs .tab::after {
+      content: ""; position: absolute; bottom: -1px; left: 0; width: 0%; height: 3px; background: #ffffff; transition: width 0.3s ease;
+    }
+    .Members-tabs .tab.active { color: #ffffff; }
+    .Members-tabs .tab.active::after { width: 100%; }
+    
+    .tab-content { display: none; animation: fadeIn 0.5s ease; }
+    .tab-content.active { display: block; }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* ================= SECTION ================= */
+    section { padding: 100px 0; }
+    .section-title { font-size: 36px; font-weight: 700; margin-bottom: 56px; text-align: center; position: relative; color: #1e293b; }
+    .section-title::after { content: ""; display: block; width: 48px; height: 4px; margin: 20px auto 0; background: #0f172a; border-radius: 2px; }
+
+    /* ================= PROFESSOR STYLE ================= */
+    .prof-card {
+      display: flex; gap: 64px; background: #ffffff;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.06);
+      border: 1px solid #f1f5f9; border-radius: 24px; padding: 48px;
+      align-items: flex-start;
+    }
+    .prof-photo {
+      flex: 0 0 420px; aspect-ratio: 3 / 4;
+      border-radius: 20px; overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    }
+    .prof-photo img { width: 100%; height: 100%; object-fit: cover; }
+    .prof-info { flex: 1; }
+    .prof-info h3 { font-size: 36px; font-weight: 800; color: #0f172a; line-height: 1.2; margin-bottom: 8px; }
+    .prof-role { font-size: 18px; font-weight: 600; color: #64748b; margin-bottom: 36px; display: inline-block; border-bottom: 3px solid #cbd5e1; padding-bottom: 4px; }
+    .prof-section { margin-bottom: 32px; }
+    .prof-section:last-child { margin-bottom: 0; }
+    .prof-section h4 { font-size: 16px; font-weight: 700; color: #1e293b; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 14px; border-left: 3px solid #0f172a; padding-left: 12px; }
+    .prof-section p, .prof-section li { font-size: 16px; color: #334155; line-height: 1.75; margin-bottom: 8px; }
+    .prof-section ul { padding-left: 20px; list-style-type: square; }
+    .prof-section li { margin-bottom: 12px; }
+    .prof-contact p { font-weight: 500; display: flex; align-items: center; gap: 10px; color: #475569; }
+
+    /* ================= RESEARCHER & STUDENT CARDS ================= */
+    .member-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 32px; }
+    
+    #section-researcher .member-grid {
+      display: flex; justify-content: center; flex-wrap: wrap; gap: 40px;
+    }
+    #section-researcher .member-card { width: 320px; flex: none; }
+
+    .member-card {
+      background: #ffffff; border-radius: 16px; overflow: hidden; border: 1px solid #e2e8f0;
+      transition: all 0.3s ease; display: flex; flex-direction: column; text-align: center;
+    }
+    .member-card:hover { transform: translateY(-8px); box-shadow: 0 12px 30px rgba(0,0,0,0.08); border-color: #cbd5e1; }
+    .member-card-photo { width: 100%; aspect-ratio: 3 / 4; background: #f1f5f9; position: relative; }
+    .member-card-photo img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+    .member-card:hover .member-card-photo img { transform: scale(1.05); }
+    .member-card-info { padding: 24px 20px; flex: 1; display: flex; flex-direction: column; justify-content: center; }
+    .member-card-info h3 { font-size: 18px; font-weight: 700; color: #1e293b; margin-bottom: 4px; }
+    .member-card-info .role { font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 16px; }
+    .member-card-contact { margin-top: auto; padding-top: 16px; border-top: 1px solid #f1f5f9; }
+    .member-card-contact p { font-size: 13px; color: #94a3b8; margin-bottom: 4px; }
+
+    /* ================= RESPONSIVE ================= */
+    @media (max-width: 960px) {
+      .prof-card { flex-direction: column; align-items: center; text-align: left; padding: 36px; gap: 36px; }
+      .prof-photo { width: 100%; max-width: 400px; flex: auto; }
+      .prof-info { width: 100%; }
+      .prof-info h3 { font-size: 28px; text-align: center; }
+      .prof-role { text-align: center; display: block; width: fit-content; margin: 0 auto 36px; }
+      #section-researcher .member-card { width: 100%; max-width: 320px; }
+    }
+    
+    /* ================= FOOTER (가로 배치형 업데이트) ================= */
+    footer { 
+      padding: 50px 0; 
+      background: #0f172a; 
+      color: #94a3b8; 
+      font-size: 14px; 
+      text-align: center; 
+    }
+
+    .footer-container h3 { 
+      color: #fff; 
+      margin-bottom: 20px; 
+      font-size: 18px; 
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      
+      /* 다른 페이지와의 통일성을 위해 높이 초기화 */
+      min-height: auto; 
+      line-height: 1.2;
+    }
+
+    .footer-info {
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+    
+    .footer-info p {
+      margin-bottom: 6px; /* 줄 간격 */
+    }
+
+    /* 가로 배치를 위한 span 스타일 */
+    .footer-info span {
+      display: inline-block;
+      margin: 0 2px;
+    }
+    
+    /* 구분선(|) 스타일 */
+    .footer-info .sep {
+      color: #475569;
+      margin: 0 10px;
+      font-size: 12px;
+      vertical-align: middle;
+    }
+
+    .footer-copy { 
+      margin-top: 25px; 
+      padding-top: 20px; 
+      border-top: 1px solid rgba(255,255,255,0.1); 
+      color: #64748b; 
+      font-size: 13px;
+    }
+
+    /* 반응형 미디어 쿼리 */
+    @media (max-width: 768px) {
+      .footer-info span { display: block; margin: 4px 0; }
+      .footer-info .sep { display: none; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header id="header">
+    <div class="inner">
+      <a href="index.html" class="logo">URBAN AI LAB</a>
+
+      <nav class="main-nav">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="projects.html">Projects</a>
+        
+        <div class="nav-item dropdown">
+          <a href="publications.html">Publications</a>
+          <div class="dropdown-menu">
+            <a href="publications.html#journal">Journal</a>
+            <a href="publications.html#conference">Conference</a>
+            <a href="publications.html#award">Award</a>
+            <a href="publications.html#patent">Patents & IP</a>
+            <a href="publications.html#book">Book</a>
+          </div>
+        </div>
+
+        <div class="nav-item dropdown">
+          <a href="members.html" style="font-weight: 700; color: #fff;">Members</a>
+          <div class="dropdown-menu">
+            <a href="javascript:void(0)" onclick="switchTab('professor')">Professor</a>
+            <a href="javascript:void(0)" onclick="switchTab('researcher')">Researcher</a>
+            <a href="javascript:void(0)" onclick="switchTab('student')">Student</a>
+          </div>
+        </div>
+        
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="sub-hero">
+    <h1>Members</h1>
+    <div class="Members-tabs">
+      <button class="tab active" data-tab="professor">Professor</button>
+      <button class="tab" data-tab="researcher">Researcher</button>
+      <button class="tab" data-tab="student">Student</button>
+    </div>
+  </section>
+
+  <section>
+    <div class="inner">
+      <h2 class="section-title" id="research-title">Professor</h2>
+
+      <div class="tab-content active" id="section-professor">
+        <div class="prof-card">
+          <div class="prof-photo">
+            <img src="assets/images/members/members_professor.png" alt="Professor Photo">
+          </div>
+          <div class="prof-info">
+            <h3>Keon Chul Park, Ph.D <br>박건철</h3>
+            <div class="prof-role">Principal Investigator</div>
+
+            <div class="prof-section prof-contact">
+              <h4>Contact</h4>
+              <p>☎ 031-8041-0671</p>
+              <p>📧 parkkc07@tukorea.ac.kr</p>
+              <p>🏢 경기도 시흥시 산기대학로 237 (정왕동) 한국공학대학교 G동318호</p>
+            </div>
+
+            <div class="prof-section">
+              <h4>Education</h4>
+              <ul>
+                <li>(학사) 경희대학교 언론정보학부 언론학사</li>
+                <li>(석사) 연세대학교 정보대학원 정보시스템석사</li>
+                <li>(박사) 연세대학교 정보대학원 정보시스템박사</li>
+              </ul>
+            </div>
+
+            <div class="prof-section">
+              <h4>Professional Experience</h4>
+              <ul>
+                <li>(2025.3 ~현재) 한국데이터사이언스학회 총무부회장</li>
+                <li>(2023.8 ~현재) 경기도청 제안심사위원회 위원</li>
+                <li>(2022.8 ~ 2025.6) 국토교통부 ITS 표준총회 기술위원</li>
+                <li>(2022.3 ~ 2023.4) 세계은행그룹(The World Bank) ICT/디지털분과 STC</li>
+                <li>(2021.9 ~ 2015.8) 차세대융합기술연구원 선임연구원 /AI융합연구센터장(代) /UrbanComputing&Innovaton Lab. 실장</li>
+                <li>(2021.9 ~ 2015.8) 서울특별시 제3기, 4기 공유촉진위원회 위원</li>
+                <li>(2016.6 ~ 2021.9) 서울AI재단 책임연구원</li>
+                <li>(2015.3 ~ 2016.5) 성균관대학교 박사후연구원</li>
+              </ul>
+            </div>
+
+            <div class="prof-section">
+              <h4>Selected Publications</h4>
+              <ul>
+                <li>(2025). 한국의 데이터정책과 AI정부, 한울아카데미</li>
+                <li>(2024). 인구특성 변화 분석을 통한 도시유형 분류 및 지속가능성 진단, 한반도미래인구연구원</li>
+                <li>(2024). Enabling Data-Driven Innovation: Learning from Korea's Data Policies and Practices for Harnessing AI, The World Bank Group</li>
+                <li>(2025). Analysis of UX Elements in Educational Applications for Young Children and Implementation of ISO/IEC 25010 Quality Standards. Sage Open, 15(3). </li>
+                <li>(2025). Latent Profiles and Regression-Based Analysis of Socio-Emotional Development: Evidence from Longitudinal Data and Interpretable Machine Learning. 멀티미디어학회논문지, 28(9), 1339-1357.</li>
+                <li>(2025). 유아의 안전한 대화를 지원하는 AI 동반자 서비스 아키텍처:유해 언어 필터링을 중심으로. 인터넷정보학회논문지, 26(4), 55-68.</li>
+                <li>(2024). BERTopic을 활용한 미래유망기술 도출 방법론 제안 : 건설·부동산 산업의 디지털 전환 방향 사례를 중심으로. 인터넷정보학회논문지, 25(6), 71-80.</li>
+                <li>(2024). 인구특성 데이터 기반 대한민국 인구실태 분석: 229개 기초지자체를 대상으로. 한국인구학, 47(3), 117-153.</li>
+                <li>(2024). 유아 특성을 고려한 AI 윤리 프레임워크와 규제 방향 도출에 관한 연구. 디지털콘텐츠학회논문지, 25(8), 2225-2237.
+</li>
+                <li>(2023). 유아용 인공지능 동반자의 사회적 특성 연구. 디지털콘텐츠학회논문지, 24(12), 3199-3211.</li>
+                <li>(2023). Where and Why? A Novel Approach for Prioritizing Implementation Points of Public CCTVs using Urban Big Data. 인터넷정보학회논문지, 24(5), 97-106.</li>
+                <li>(2023). Application of Urban Computing to Explore Living Environment Characteristics in Seoul : Integration of S-Dot Sensor and Urban Data. 인터넷정보학회논문지, 24(4), 65-76.</li>
+                <li>(2023). STEAM 미래개척융합과학기술개발사업 ‘상황중심 인공지능 유아동반자 기술개발 연구’ (한국연구재단)(진행중)</li>
+                <li>(2022). ‘빅데이터기반 인공지능 도시계획 기술개발 연구’(국토교통과학기술진흥원)(진행중)</li>
+                <li>‘국토교통 데이터산업 활성화를 위한 데이터 혁신클러스터 조성 및 핵심기술개발 기획’ (국토교통과학기술진흥원)</li>
+                <li>‘사용자참여형 빅데이터 기반 건강 위험도 예측 및 관리 서비스 개발’ (한국산업기술기획평가원)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-content" id="section-researcher">
+        <div class="member-grid">
+          
+          <div class="member-card">
+            <div class="member-card-photo">
+              <img src="https://lh3.googleusercontent.com/..." alt="Sudan">
+            </div>
+            <div class="member-card-info">
+              <h3>Sudan Prasad Uprety<br>수단</h3>
+              <div class="role">산학협력단/박사연구원</div>
+              <div class="member-card-contact">
+                <p>📧 uprety_sud@tukorea.ac.kr</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="member-card">
+            <div class="member-card-photo">
+              <img src="https://lh3.googleusercontent.com/..." alt="Woo Min Nam">
+            </div>
+            <div class="member-card-info">
+              <h3>Woo Min Nam<br>남우민</h3>
+              <div class="role">산학협력단/박사연구원</div>
+              <div class="member-card-contact">
+                <p>📧 applewoods9559@tukorea.ac.kr</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="tab-content" id="section-student">
+        <div class="member-grid">
+          
+          <div class="member-card">
+            <div class="member-card-photo">
+              <img src="https://lh3.googleusercontent.com/..." alt="Hae Sun Jung">
+            </div>
+            <div class="member-card-info">
+              <h3>Student Name<br>학생 이름</h3>
+              <div class="role">Degree, Major</div>
+              <div class="member-card-contact">
+                <p>📧 jestiriel@snu.ac.kr</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="member-card">
+            <div class="member-card-photo">
+              <img src="https://lh3.googleusercontent.com/..." alt="Woo Min Nam">
+            </div>
+            <div class="member-card-info">
+              <h3>Student Name<br>학생 이름</h3>
+              <div class="role">Degree, Major</div>
+              <div class="member-card-contact">
+                <p>📧 email@example.com</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="member-card">
+            <div class="member-card-photo">
+              <img src="https://lh3.googleusercontent.com/..." alt="Woo Min Nam">
+            </div>
+            <div class="member-card-info">
+              <h3>Student Name<br>학생 이름</h3>
+              <div class="role">Degree, Major</div>
+              <div class="member-card-contact">
+                <p>📧 aemail@example.com</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="member-card">
+            <div class="member-card-photo">
+              <img src="https://lh3.googleusercontent.com/..." alt="Student Name">
+            </div>
+            <div class="member-card-info">
+              <h3>Student Name<br>학생 이름</h3>
+              <div class="role">Degree, Major</div>
+              <div class="member-card-contact">
+                <p>📧 email@example.com</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="member-card">
+            <div class="member-card-photo">
+              <img src="https://lh3.googleusercontent.com/..." alt="Student Name">
+            </div>
+            <div class="member-card-info">
+              <h3>Student Name<br>학생 이름</h3>
+              <div class="role">Degree, Major</div>
+              <div class="member-card-contact">
+                <p>📧 email@example.com</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="member-card">
+            <div class="member-card-photo">
+              <img src="https://lh3.googleusercontent.com/..." alt="Student Name">
+            </div>
+            <div class="member-card-info">
+              <h3>Student Name<br>학생 이름</h3>
+              <div class="role">Degree, Major</div>
+              <div class="member-card-contact">
+                <p>📧 email@example.com</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <footer>
+    <div class="inner">
+      <div class="footer-container">
+        <h3>URBAN AI LAB</h3>
+        
+        <div class="footer-info">
+          <p>
+            <span>Department of Business Administration</span>
+            <span class="sep">|</span>
+            <span>Tech University of Korea</span>
+          </p>
+          
+          <p>
+            <span>Rm 412, Engineering Bldg D, 237 Sangidaehak-ro, Siheung-si, Gyeonggi-do, Korea</span>
+            <span class="sep">|</span>
+            <span>Email: urbanai-eh@tukorea.ac.kr</span>
+          </p>
+        </div>
+  
+        <div class="footer-copy">
+          <p>© 2026 URBAN AI LAB. All Rights Reserved.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const header = document.getElementById("header");
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 80) header.classList.add("scrolled");
+      else header.classList.remove("scrolled");
+    });
+
+    lucide.createIcons();
+
+    const tabs = document.querySelectorAll(".Members-tabs .tab");
+    const contents = document.querySelectorAll(".tab-content");
+    const title = document.getElementById("research-title");
+
+    // 탭 전환 함수
+    function switchTab(tabName) {
+      // 1. 모든 탭/콘텐츠 비활성화
+      tabs.forEach(t => t.classList.remove("active"));
+      contents.forEach(c => c.classList.remove("active"));
+
+      // 2. 선택된 탭 활성화
+      const selectedTab = document.querySelector(`.Members-tabs .tab[data-tab="${tabName}"]`);
+      
+      // 3. 선택된 콘텐츠 활성화 (ID prefix 'section-' 적용)
+      const selectedContent = document.getElementById('section-' + tabName);
+
+      if (selectedTab && selectedContent) {
+        selectedTab.classList.add("active");
+        selectedContent.classList.add("active");
+        
+        // 4. 섹션 제목 업데이트
+        title.textContent = selectedTab.textContent;
+      }
+    }
+
+    // 내부 탭 버튼 클릭 이벤트
+    tabs.forEach(tab => {
+      tab.addEventListener("click", () => {
+        switchTab(tab.dataset.tab);
+      });
+    });
+
+    // 페이지 로드시 URL 해시(#)가 있으면 해당 탭 열기 (외부 링크 대응)
+    window.addEventListener('DOMContentLoaded', () => {
+      const hash = window.location.hash.replace('#', '');
+      if (hash && (hash === 'professor' || hash === 'researcher' || hash === 'student')) {
+        switchTab(hash);
+      }
+    });
+  </script>
+
+</body>
+</html>
